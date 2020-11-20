@@ -1,15 +1,11 @@
 package mwares
 
 import (
-	"errors"
 	"time"
 
 	"github.com/go-park-mail-ru/2020_2_CodeExpress/internal/session"
 
 	. "github.com/go-park-mail-ru/2020_2_CodeExpress/internal/consts"
-	"github.com/go-park-mail-ru/2020_2_CodeExpress/internal/tools/csrf"
-	. "github.com/go-park-mail-ru/2020_2_CodeExpress/internal/tools/error_response"
-	. "github.com/go-park-mail-ru/2020_2_CodeExpress/internal/tools/responser"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/sirupsen/logrus"
@@ -64,7 +60,7 @@ func (mm *MiddlewareManager) CORS() echo.MiddlewareFunc {
 
 func (mm *MiddlewareManager) CheckCSRF(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(ctx echo.Context) error {
-		csrfErr := errors.New("Bad csrf token received")
+		/*csrfErr := errors.New("Bad csrf token received")
 		sessionCookie, err := ctx.Cookie(ConstSessionName)
 
 		if err != nil {
@@ -86,7 +82,7 @@ func (mm *MiddlewareManager) CheckCSRF(next echo.HandlerFunc) echo.HandlerFunc {
 
 		if errResp != nil {
 			return RespondWithError(errResp, ctx)
-		}
+		}*/
 
 		return next(ctx)
 	}
