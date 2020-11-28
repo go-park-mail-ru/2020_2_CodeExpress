@@ -30,7 +30,7 @@ func (aUc *TrackUsecase) CreateTrack(track *models.Track) *ErrorResponse {
 		return NewErrorResponse(ErrInternal, err)
 	}
 
-	copier.Copy(&track, &newTrack)
+	_ = copier.Copy(&track, &newTrack)
 
 	return nil
 }
@@ -63,13 +63,35 @@ func (aUc *TrackUsecase) GetByID(id uint64) (*models.Track, *ErrorResponse) {
 	return track, nil
 }
 
-func (aUc *TrackUsecase) GetByArtistID(artistID uint64) ([]*models.Track, *ErrorResponse) {
-	tracks, err := aUc.trackRep.SelectByArtistID(artistID)
-
+func (aUc *TrackUsecase) GetByArtistIdWithFav(artistId uint64, userId uint64) ([]*models.Track, *ErrorResponse) {
+	tracks, err := aUc.trackRep.SelectByArtistIdWithFav(artistId, userId)
 	if err == sql.ErrNoRows {
 		return nil, NewErrorResponse(ErrArtistNotExist, err)
 	}
+	if err != nil {
+		return nil, NewErrorResponse(ErrInternal, err)
+	}
 
+	return tracks, nil
+}
+
+func (aUc *TrackUsecase) GetByArtistId(artistId uint64) ([]*models.Track, *ErrorResponse) {
+	tracks, err := aUc.trackRep.SelectByArtistId(artistId)
+	if err == sql.ErrNoRows {
+		return nil, NewErrorResponse(ErrArtistNotExist, err)
+	}
+	if err != nil {
+		return nil, NewErrorResponse(ErrInternal, err)
+	}
+
+	return tracks, nil
+}
+
+func (aUc *TrackUsecase) GetByParamsWithFav(count uint64, from uint64, userId uint64) ([]*models.Track, *ErrorResponse) {
+	tracks, err := aUc.trackRep.SelectByParamsWithFav(count, from, userId)
+	if err == sql.ErrNoRows {
+		return nil, nil
+	}
 	if err != nil {
 		return nil, NewErrorResponse(ErrInternal, err)
 	}
@@ -78,12 +100,10 @@ func (aUc *TrackUsecase) GetByArtistID(artistID uint64) ([]*models.Track, *Error
 }
 
 func (aUc *TrackUsecase) GetByParams(count uint64, from uint64) ([]*models.Track, *ErrorResponse) {
-	tracks, err := aUc.trackRep.SelectByParam(count, from)
-
+	tracks, err := aUc.trackRep.SelectByParams(count, from)
 	if err == sql.ErrNoRows {
 		return nil, nil
 	}
-
 	if err != nil {
 		return nil, NewErrorResponse(ErrInternal, err)
 	}
@@ -108,7 +128,7 @@ func (aUc *TrackUsecase) UpdateTrack(track *models.Track) *ErrorResponse {
 		return NewErrorResponse(ErrInternal, err)
 	}
 
-	copier.Copy(&track, &newTrack)
+	_ = copier.Copy(&track, &newTrack)
 
 	return nil
 }
@@ -130,7 +150,7 @@ func (aUc *TrackUsecase) UpdateTrackAudio(track *models.Track) *ErrorResponse {
 		return NewErrorResponse(ErrInternal, err)
 	}
 
-	copier.Copy(&track, &newTrack)
+	_ = copier.Copy(&track, &newTrack)
 
 	return nil
 }

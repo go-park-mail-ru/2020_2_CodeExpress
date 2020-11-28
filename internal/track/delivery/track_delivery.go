@@ -156,8 +156,13 @@ func (ah *TrackHandler) HandlerTracksByArtistID() echo.HandlerFunc {
 			return RespondWithError(NewErrorResponse(ErrBadRequest, err), ctx)
 		}
 
-		tracks, errResp := ah.trackUsecase.GetByArtistID(uint64(id))
-
+		var tracks []*models.Track
+		var errResp *ErrorResponse
+		if user := ah.tryGetUser(ctx); user != nil {
+			tracks, errResp = ah.trackUsecase.GetByArtistIdWithFav(uint64(id), user.ID)
+		} else {
+			tracks, errResp = ah.trackUsecase.GetByArtistId(uint64(id))
+		}
 		if errResp != nil {
 			return RespondWithError(errResp, ctx)
 		}
@@ -179,8 +184,13 @@ func (ah *TrackHandler) HandlerTracksByParams() echo.HandlerFunc {
 			return RespondWithError(NewErrorResponse(ErrBadRequest, err), ctx)
 		}
 
-		tracks, errResp := ah.trackUsecase.GetByParams(uint64(count), uint64(from))
-
+		var tracks []*models.Track
+		var errResp *ErrorResponse
+		if user := ah.tryGetUser(ctx); user != nil {
+			tracks, errResp = ah.trackUsecase.GetByParamsWithFav(uint64(count), uint64(from), user.ID)
+		} else {
+			tracks, errResp = ah.trackUsecase.GetByParams(uint64(count), uint64(from))
+		}
 		if errResp != nil {
 			return RespondWithError(errResp, ctx)
 		}
@@ -311,4 +321,23 @@ func (ah *TrackHandler) HandlerUploadTrackAudio() echo.HandlerFunc {
 
 		return ctx.JSON(http.StatusOK, track)
 	}
+}
+
+func (ah *TrackHandler) tryGetUser(ctx echo.Context) *models.User {
+	cookie, err := ctx.Cookie(ConstSessionName)
+	if err != nil {
+		return nil
+	}
+
+	userSession, errResp := ah.sessionUsecase.GetByID(cookie.Value)
+	if errResp != nil {
+		return nil
+	}
+
+	user, errNoUser := ah.userUsecase.GetById(userSession.UserID)
+	if errNoUser != nil {
+		return nil
+	}
+
+	return user
 }

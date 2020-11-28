@@ -224,7 +224,7 @@ func TestAlbumDelivery_HandlerTracksByArtistID(t *testing.T) {
 
 	trackMockUsecase.
 		EXPECT().
-		GetByArtistID(id).
+		GetByArtistId(id).
 		Return(expectedTracks, nil)
 
 	albumHandler := delivery.NewTrackHandler(trackMockUsecase, nil, nil)

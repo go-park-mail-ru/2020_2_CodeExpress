@@ -225,10 +225,10 @@ func TestArtistUsecase_GetByArtistID(t *testing.T) {
 
 	mockRepo.
 		EXPECT().
-		SelectByArtistID(gomock.Eq(expectedTrack.ArtistID)).
+		SelectByArtistId(gomock.Eq(expectedTrack.ArtistID)).
 		Return(expectedTracks, nil)
 
-	tracks, err := mockUsecase.GetByArtistID(expectedTrack.ArtistID)
+	tracks, err := mockUsecase.GetByArtistId(expectedTrack.ArtistID)
 	assert.Equal(t, err, nil)
 	assert.Equal(t, tracks, expectedTracks)
 }
@@ -293,7 +293,7 @@ func TestArtistUsecase_GetByArtistParams(t *testing.T) {
 
 	mockRepo.
 		EXPECT().
-		SelectByParam(gomock.Eq(count), gomock.Eq(from)).
+		SelectByParams(gomock.Eq(count), gomock.Eq(from)).
 		Return(expectedTracks, nil)
 
 	tracks, err := mockUsecase.GetByParams(count, from)
@@ -313,7 +313,7 @@ func TestArtistUsecase_GetByArtistParams_Internal(t *testing.T) {
 
 	mockRepo.
 		EXPECT().
-		SelectByParam(gomock.Eq(count), gomock.Eq(from)).
+		SelectByParams(gomock.Eq(count), gomock.Eq(from)).
 		Return(nil, dbErr)
 
 	tracks, err := mockUsecase.GetByParams(count, from)
@@ -332,7 +332,7 @@ func TestArtistUsecase_GetByArtistParams_Failed(t *testing.T) {
 
 	mockRepo.
 		EXPECT().
-		SelectByParam(gomock.Eq(count), gomock.Eq(from)).
+		SelectByParams(gomock.Eq(count), gomock.Eq(from)).
 		Return(nil, sql.ErrNoRows)
 
 	tracks, err := mockUsecase.GetByParams(count, from)
