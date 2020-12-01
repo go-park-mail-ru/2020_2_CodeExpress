@@ -6,10 +6,13 @@ import (
 	"log"
 	"os"
 
+<<<<<<< HEAD:app/main/main.go
 	"github.com/go-park-mail-ru/2020_2_CodeExpress/internal/admin/proto_admin"
 
 	"github.com/go-park-mail-ru/2020_2_CodeExpress/internal/track/proto_track"
 
+=======
+>>>>>>> 0d81e9f (CP-100: Перенести работу с сессиями на микросервисную архитектуру):app/main.go
 	"github.com/go-park-mail-ru/2020_2_CodeExpress/internal/session/proto_session"
 
 	"google.golang.org/grpc"
@@ -89,10 +92,16 @@ func main() {
 	searchRep := searchRepository.NewSearchRep(dbConn)
 
 	userUsecase := userUsecase.NewUserUsecase(userRep)
+<<<<<<< HEAD:app/main/main.go
+=======
+	artistUsecase := artistUsecase.NewArtistUsecase(artistRep)
+	trackUsecase := trackUsecase.NewTrackUsecase(trackRep)
+>>>>>>> 0d81e9f (CP-100: Перенести работу с сессиями на микросервисную архитектуру):app/main.go
 	albumUsecase := albumUsecase.NewAlbumUsecase(albumRep)
 	playlistUsecase := playlistUsecase.NewPlaylistUsecase(playlistRep)
 	searchUsecase := searchUsecase.NewSearchUsecase(searchRep)
 
+<<<<<<< HEAD:app/main/main.go
 	adminGRPCConn, err := grpc.Dial(conf.GetAdminMicroserviceConnString(), grpc.WithInsecure())
 	if err != nil {
 		logrus.Fatal(err)
@@ -101,6 +110,8 @@ func main() {
 	adminGRPC := proto_admin.NewAdminServiceClient(adminGRPCConn)
 	artistUsecase := artistUsecase.NewArtistUsecase(artistRep, adminGRPC)
 
+=======
+>>>>>>> 0d81e9f (CP-100: Перенести работу с сессиями на микросервисную архитектуру):app/main.go
 	sessionGRPCConn, err := grpc.Dial(conf.GetSessionMicroserviceConnString(), grpc.WithInsecure())
 	if err != nil {
 		logrus.Fatal(err)
@@ -109,6 +120,7 @@ func main() {
 	sessionGRPC := proto_session.NewSessionServiceClient(sessionGRPCConn)
 	sessionUsecase := sessionUsecase.NewSessionUsecase(sessionGRPC)
 
+<<<<<<< HEAD:app/main/main.go
 	trackGRPCConn, err := grpc.Dial(conf.GetTrackMicroserviceConnString(), grpc.WithInsecure())
 	if err != nil {
 		logrus.Fatal(err)
@@ -117,6 +129,8 @@ func main() {
 	trackGRPC := proto_track.NewTrackServiceClient(trackGRPCConn)
 	trackUsecase := trackUsecase.NewTrackUsecase(trackGRPC)
 
+=======
+>>>>>>> 0d81e9f (CP-100: Перенести работу с сессиями на микросервисную архитектуру):app/main.go
 	userHandler := userDelivery.NewUserHandler(userUsecase, sessionUsecase)
 	sessionHandler := sessionDelivery.NewSessionHandler(sessionUsecase, userUsecase)
 	artistHandler := artistDelivery.NewArtistHandler(artistUsecase)
