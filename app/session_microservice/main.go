@@ -8,9 +8,9 @@ import (
 	"net"
 	"os"
 
+	sessionRepository "github.com/go-park-mail-ru/2020_2_CodeExpress/internal/session/repository"
 	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
-	sessionRepository "github.com/go-park-mail-ru/2020_2_CodeExpress/internal/session/repository"
 
 	"github.com/go-park-mail-ru/2020_2_CodeExpress/config"
 
