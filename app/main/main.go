@@ -127,9 +127,6 @@ func main() {
 
 	e := echo.New()
 
-	/*p := prometheus.NewPrometheus("echo", urlSkipper)
-	p.Use(e)*/
-
 	monitoring := monitoring.NewMonitoring(e)
 	mm := mwares.NewMiddlewareManager(sessionUsecase, userUsecase, monitoring)
 	e.Use(mm.AccessLog, mm.PanicRecovering, mm.CORS(), mm.XSS())
